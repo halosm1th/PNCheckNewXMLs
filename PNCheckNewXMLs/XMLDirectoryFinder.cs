@@ -23,8 +23,22 @@ public class XMLDirectoryFinder
         return xmlDir;
     }
     
+    public string FindBiblioDirectory(string startingDir)
+    {
+        var idpData = FindIDPDataDirectory(startingDir);
+        
+        var DirsInIDP = Directory.GetDirectories(idpData);
+        if (DirsInIDP.Any(x => x.ToLower().Contains("biblio")))
+        {
+            var biblio = DirsInIDP.First(x => x.ToLower().Contains("biblio"));
+            return biblio;
+        }
+        
+        throw new DirectoryNotFoundException("Could not find BPToPNOutput or NewXmlEntries directories.");
+    }
     
-    private string FindNewXmlDirectory(string idp_DataDir, string searchingForName = "")
+    
+    private string FindNewXmlDirectory(string idp_DataDir, string searchingForName = "bptopnoutput")
     {
         var DirsInIDP = Directory.GetDirectories(idp_DataDir);
         if (DirsInIDP.Any(x => x.ToLower().Contains("bptopnoutput")))
@@ -40,7 +54,7 @@ public class XMLDirectoryFinder
         throw new DirectoryNotFoundException("Could not find BPToPNOutput or NewXmlEntries directories.");
     }
     
-    private string FindIDPDataDirectory(string startingDirectory, string searchTerm = "idp.data")
+    public string FindIDPDataDirectory(string startingDirectory, string searchTerm = "idp.data")
     {
         var dirs = Directory.GetDirectories(startingDirectory);
         if (dirs.Any(x => x.Contains(searchTerm)))
