@@ -34,13 +34,12 @@ public class XMLEntryGatherer
 
     private XMLDataEntry GetEntry(string filePath)
     {
-        //logger.LogProcessingInfo($"Getting entry at {filePath}");
+        logger.LogProcessingInfo($"Getting entry at {filePath}");
         var entry = new XMLDataEntry(filePath, logger);
         var doc = new XmlDocument();
         doc.Load(filePath);
-        //logger.LogProcessingInfo("Entry loaded.");
-
-        //Console.WriteLine($"getting: {filePath}");
+        logger.LogProcessingInfo("Entry loaded.");
+        Console.WriteLine($"getting: {filePath}");
 
         foreach (var rawNode in doc?.DocumentElement?.ChildNodes)
         {
