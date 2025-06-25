@@ -340,11 +340,11 @@ class PNCheckerNewXmls
         {
             if (haschosen)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"Error {choice} is not a valid selection. Please pick a number between 0-{max}");
                 Console.ResetColor();
             }
-            
+            Console.Write(">: ");
             choice = Console.ReadLine();
             haschosen = true;
             var isNumb = Int32.TryParse(choice, out numb);
