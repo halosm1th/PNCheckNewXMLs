@@ -301,11 +301,11 @@ class PNCheckerNewXmls
     private static void NewEntry(XMLDataEntry entry)
     {
         logger.Log($"Could not find an entry in PN for BP# {entry.BPNumber}.\n" +
-            $"Saving entry segs to: {entry.PNFileName}");
+            $"Not deleting {entry.PNFileName}");
         logger.LogProcessingInfo($"Could not find an entry in PN for BP# {entry.BPNumber}.\n" +
-                   $"Saving entry segs to: {entry.PNFileName}");
+                   $"Not deleting {entry.PNFileName}");
         Console.WriteLine($"Could not find an entry in PN for BP# {entry.BPNumber}.\n" +
-                   $"Saving entry segs to: {entry.PNFileName}");
+                   $"Not deleting {entry.PNFileName}");
         notFoundFiles.Add(entry.PNFileName);
     }
 
@@ -313,14 +313,16 @@ class PNCheckerNewXmls
     {
         Console.WriteLine($"════════════════════════════════");
         Console.Write("Entry to compare again:");
-        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.Write($"{entry.Title} ({entry.BPNumber}) \n");
         Console.ResetColor();
         int index = 1;
         Console.WriteLine("0) None");
+        Console.WriteLine("----------------");
         foreach (var td in table)
         {
             Console.WriteLine($"{index}) {td}");
+            Console.WriteLine("----------------");
             index++;
         }
 
@@ -405,7 +407,7 @@ class PNCheckerNewXmls
         if (entry.HasBPNum) year = entry.BPNumber.Split("-")[0];
         if (entry.HasName) name = entry.Name;
         else name = GetName(entry);
-        var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{year}+author%3A+{name}";
+        var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{year}+{name}";
 
         logger.LogProcessingInfo($"Gathered URL: {requestURL}");
         
