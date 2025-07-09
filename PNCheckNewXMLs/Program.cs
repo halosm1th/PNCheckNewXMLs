@@ -56,7 +56,7 @@ class PNCheckerNewXmls
 
     static void SaveNewFileList(string saveDir)
     {
-        string name = $"XmlFrom {DateTime.Today}({DateTime.Now.Hour}-{DateTime.Now.Minute})";
+        string name = $"XmlFrom {DateTime.Today}({DateTime.Now.Hour}-{DateTime.Now.Minute}).txt";
         var path = Path.Combine(saveDir, name);
         
         logger.LogProcessingInfo($"Saving list of new files to {path}");
@@ -194,8 +194,8 @@ class PNCheckerNewXmls
             var newIdno = file.CreateElement("note", "http://www.tei-c.org/ns/1.0");
 
             // Set type attribute
-            var type = file.CreateAttribute("type");
-            type.Value = "resume";
+            var type = file.CreateAttribute("resp");
+            type.Value = "#BP";
             newIdno.Attributes.Append(type);
 
             // Set name text
