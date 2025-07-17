@@ -32,7 +32,7 @@ public class XMLEntryGatherer
     public string BiblioPath { get; set; }
     private Logger logger { get; }
 
-    private XMLDataEntry GetEntry(string filePath)
+    private XMLDataEntry? GetEntry(string filePath)
     {
         try
         {
@@ -47,7 +47,7 @@ public class XMLEntryGatherer
             {
                 if (rawNode.GetType() == typeof(XmlElement))
                 {
-                    var node = ((XmlElement)rawNode);
+                    var node = ((XmlElement) rawNode);
                     SetEntryAttributes(node, entry);
                 }
                 else
@@ -62,9 +62,13 @@ public class XMLEntryGatherer
         }
         catch (Exception e)
         {
-            Console.WriteLine($"There was an erorr getting {filePath}");
-            return null;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"An error has been caught while trying to load file: {filePath}: {e}.");
+            logger.LogError($"An error has been caught while trying to load file: {filePath}.", e);
+            Console.ResetColor();
         }
+
+        return null;
     }
 
     private void SetEntryAttributes(XmlElement node, XMLDataEntry entry)
@@ -101,8 +105,7 @@ public class XMLEntryGatherer
         {
             var entry = GetEntry(file);
             logger.LogProcessingInfo($"Gathered {entry.Title} from file {file}");
-            if (entry != null)
-                dataEntries.Add(entry);
+            if (entry != null) dataEntries.Add(entry);
         }
 
         return dataEntries;
