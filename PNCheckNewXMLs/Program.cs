@@ -427,3 +427,6 @@ class PNCheckerNewXmls
         else throw new ArgumentOutOfRangeException("Error! The entry did not have a name element!");
     }
 }
+
+//Coudl not find the BP to PN output and new xml, try and adjust that to make it no necessary, make the output of hte compiler a siblingh for this
+//Indicated htat BP was correct, and spat out only one file 

@@ -34,29 +34,37 @@ public class XMLEntryGatherer
 
     private XMLDataEntry GetEntry(string filePath)
     {
-        logger.LogProcessingInfo($"Getting entry at {filePath}");
-        var entry = new XMLDataEntry(filePath, logger);
-        var doc = new XmlDocument();
-        doc.Load(filePath);
-        logger.LogProcessingInfo("Entry loaded.");
-        Console.WriteLine($"getting: {filePath}");
-
-        foreach (var rawNode in doc?.DocumentElement?.ChildNodes)
+        try
         {
-            if (rawNode.GetType() == typeof(XmlElement))
-            {
-                var node = ((XmlElement) rawNode);
-                SetEntryAttributes(node, entry);
-            }
-            else
-            {
-                //logger.LogProcessingInfo($"Found a node that is not an element, moving onto {filePath}");
-                Console.WriteLine($"getting: {filePath}");
-            }
-        }
+            logger.LogProcessingInfo($"Getting entry at {filePath}");
+            var entry = new XMLDataEntry(filePath, logger);
+            var doc = new XmlDocument();
+            doc.Load(filePath);
+            logger.LogProcessingInfo("Entry loaded.");
+            Console.WriteLine($"getting: {filePath}");
 
-        //logger.LogProcessingInfo($"Finished processing entry {entry}");
-        return entry;
+            foreach (var rawNode in doc?.DocumentElement?.ChildNodes)
+            {
+                if (rawNode.GetType() == typeof(XmlElement))
+                {
+                    var node = ((XmlElement)rawNode);
+                    SetEntryAttributes(node, entry);
+                }
+                else
+                {
+                    //logger.LogProcessingInfo($"Found a node that is not an element, moving onto {filePath}");
+                    Console.WriteLine($"getting: {filePath}");
+                }
+            }
+
+            //logger.LogProcessingInfo($"Finished processing entry {entry}");
+            return entry;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"There was an erorr getting {filePath}");
+            return null;
+        }
     }
 
     private void SetEntryAttributes(XmlElement node, XMLDataEntry entry)
