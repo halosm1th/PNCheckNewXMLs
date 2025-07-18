@@ -24,7 +24,7 @@ class PNCheckerNewXmls
 
             var startingDir = Directory.GetCurrentDirectory();
             var biblioDir = dirFinder.FindBiblioDirectory(startingDir);
-            Console.WriteLine("Found biblio, now trying to find NewXML");
+            Console.WriteLine("Found biblio, now trying to find NewXML.");
             var newXml = dirFinder.FindXmlDirectory(startingDir);
 
             logger.Log($"Found NewXMl directory {newXml}, now starting XmlEntryGatherer to gather xml entries");
