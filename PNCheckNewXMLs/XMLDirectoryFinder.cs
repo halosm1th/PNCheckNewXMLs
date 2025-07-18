@@ -57,6 +57,7 @@ public class XMLDirectoryFinder
     
     public string FindIDPDataDirectory(string startingDirectory, string searchTerm = "idp.data")
     {
+        Console.WriteLine($"Testing: {startingDirectory}");
         var dirs = Directory.GetDirectories(startingDirectory);
         if (dirs.Any(x => x.Contains(searchTerm)))
         {
