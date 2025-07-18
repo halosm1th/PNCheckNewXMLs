@@ -48,7 +48,9 @@ public class XMLDirectoryFinder
             var dirsInBPToPN = Directory.GetDirectories(bptopnDir);
             if(dirsInBPToPN.Any(x => x.Contains("NewXmlEntries")))
             {
-                return dirsInBPToPN.First(x => x.Contains("NewXmlEntries"));
+                var dirPath = dirsInBPToPN.First(x => x.Contains("NewXmlEntries"));
+                Console.WriteLine(dirPath);
+                return dirPath;
             }
         }
         else
