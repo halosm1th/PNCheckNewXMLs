@@ -17,9 +17,7 @@ public class XMLDirectoryFinder
         Console.WriteLine("Starting Search for newXMl Directory");
         _logger.LogProcessingInfo($"Finding IDP.Data Directory, starting in: {startingDir}");
         Console.WriteLine($"Finding IDP.Data Directory, starting in: {startingDir}");
-        var idpData = FindIDPDataDirectory(startingDir);
-        _logger.LogProcessingInfo($"Found IDPData @: {idpData}, now looking for newXMlDirectory");
-        var xmlDir = FindNewXmlDirectory(idpData);
+        var xmlDir = FindNewXmlDirectory(startingDir);
         
         _logger.LogProcessingInfo($"Found XMl Dir @: {xmlDir}");
         return xmlDir;
