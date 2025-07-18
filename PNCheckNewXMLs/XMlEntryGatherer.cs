@@ -98,6 +98,7 @@ public class XMLEntryGatherer
 
     public List<XMLDataEntry> GetEntriesFromFolder(string folder)
     {
+        Console.WriteLine($"Getting entries from folder {folder}");
         logger.Log($"Getting entries from folder {folder}");
         logger.LogProcessingInfo($"Getting entries from folder {folder}");
         var dataEntries = new List<XMLDataEntry>();
