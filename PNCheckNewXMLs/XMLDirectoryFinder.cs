@@ -39,13 +39,13 @@ public class XMLDirectoryFinder
     }
     
     
-    private string FindNewXmlDirectory(string idp_DataDir, string searchingForName = "bptopnoutput")
+    private string FindNewXmlDirectory(string idp_DataDir, string searchingForName = "BpToPnOutput")
     {
         Console.WriteLine($"Testing for new XML: {idp_DataDir}");
         var DirsInIDP = Directory.GetDirectories(idp_DataDir);
-        if (DirsInIDP.Any(x => x.ToLower().Contains("bptopnoutput")))
+        if (DirsInIDP.Any(x => x.ToLower().Contains(searchingForName.ToLower())))
         {
-            var bptopnDir = DirsInIDP.First(x => x.ToLower().Contains("bptopnoutput"));
+            var bptopnDir = DirsInIDP.First(x => x.ToLower().Contains(searchingForName.ToLower()));
             var dirsInBPToPN = Directory.GetDirectories(bptopnDir);
             if(dirsInBPToPN.Any(x => x.Contains("NewXmlEntries")))
             {
