@@ -41,7 +41,7 @@ public class XMLDirectoryFinder
     
     private string FindNewXmlDirectory(string idp_DataDir, string searchingForName = "bptopnoutput")
     {
-        Console.WriteLine($"Testing: {idp_DataDir}");
+        Console.WriteLine($"Testing for new XML: {idp_DataDir}");
         var DirsInIDP = Directory.GetDirectories(idp_DataDir);
         if (DirsInIDP.Any(x => x.ToLower().Contains("bptopnoutput")))
         {
@@ -51,6 +51,13 @@ public class XMLDirectoryFinder
             {
                 return dirsInBPToPN.First(x => x.Contains("NewXmlEntries"));
             }
+        }
+        else
+        {
+            var fullName = Directory.GetParent(idp_DataDir)?.FullName;
+            if (fullName != null)
+                return FindIDPDataDirectory(fullName, searchingForName);
+            else throw new DirectoryNotFoundException($"Could not find IDP.Data starting from: {idp_DataDir}");
         }
         
         throw new DirectoryNotFoundException("Could not find BPToPNOutput or NewXmlEntries directories.");
