@@ -29,7 +29,7 @@ class PNCheckerNewXmls
 
             logger.Log($"Found NewXMl directory {newXml}, now starting XmlEntryGatherer to gather xml entries");
             Console.WriteLine($"Found NewXMl directory {newXml}, now starting XmlEntryGatherer to gather xml entries");
-            var XmlEntryEGatherer = new XMLEntryGatherer(newXml, logger);
+            var XmlEntryEGatherer = new XMLEntryGatherer(biblioDir, logger);
 
             var entries = XmlEntryEGatherer.GetEntriesFromFolder(newXml);
             logger.Log($"{entries.Count} New entries have been gathered, beginning to parse entries.");

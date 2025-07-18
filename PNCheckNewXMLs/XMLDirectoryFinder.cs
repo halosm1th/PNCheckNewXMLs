@@ -18,6 +18,7 @@ public class XMLDirectoryFinder
         var xmlDir = FindNewXmlDirectory(startingDir);
         
         _logger.LogProcessingInfo($"Found XMl Dir @: {xmlDir}");
+        Console.WriteLine($"Found XMl Dir @: {xmlDir}");
         return xmlDir;
     }
     
