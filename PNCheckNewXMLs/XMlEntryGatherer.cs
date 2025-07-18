@@ -106,6 +106,7 @@ public class XMLEntryGatherer
         {
             var entry = GetEntry(file);
             logger.LogProcessingInfo($"Gathered {entry.Title} from file {file}");
+            Console.WriteLine($"Gathered {entry.Title} from file {file}");
             if (entry != null) dataEntries.Add(entry);
         }
 

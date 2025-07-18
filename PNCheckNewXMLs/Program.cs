@@ -57,7 +57,8 @@ class PNCheckerNewXmls
 
     static void SaveNewFileList(string saveDir)
     {
-        string name = $"XmlFrom {DateTime.Today}({DateTime.Now.Hour}-{DateTime.Now.Minute}).txt";
+        //XmlFrom 2025-07-18 12:00:00 AM(13-39).txt
+        string name = $"XmlFrom {DateTime.Today.Day}-{DateTime.Today.Month}-{DateTime.Today.Year}({DateTime.Now.Hour}-{DateTime.Now.Minute}).txt";
         var path = Path.Combine(saveDir, name);
         
         logger.LogProcessingInfo($"Saving list of new files to {path}");
