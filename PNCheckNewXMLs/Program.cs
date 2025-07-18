@@ -19,11 +19,12 @@ class PNCheckerNewXmls
         try
         {
             logger.Log("Starting program.\nTrying to find NewXMl Directory");
-            Console.WriteLine("Starting program.\nTrying to find NewXMl Directory");
+            Console.WriteLine("Starting program.\nTrying to find Biblio Directory");
             var dirFinder = new XMLDirectoryFinder(logger);
 
             var startingDir = Directory.GetCurrentDirectory();
             var biblioDir = dirFinder.FindBiblioDirectory(startingDir);
+            Console.WriteLine("Found biblio, now trying to find NewXML");
             var newXml = dirFinder.FindXmlDirectory(startingDir);
 
             logger.Log($"Found NewXMl directory {newXml}, now starting XmlEntryGatherer to gather xml entries");
@@ -428,5 +429,5 @@ class PNCheckerNewXmls
     }
 }
 
-//Coudl not find the BP to PN output and new xml, try and adjust that to make it no necessary, make the output of hte compiler a siblingh for this
-//Indicated htat BP was correct, and spat out only one file 
+//Coudl not find the BP to PN output and new xml,
+//try and adjust that to make it no necessary, make the output of hte compiler a siblingh for this

@@ -25,6 +25,7 @@ public class XMLDirectoryFinder
     
     public string FindBiblioDirectory(string startingDir)
     {
+        Console.WriteLine($"Trying to find IDP.Data Directory. Starting at: {startingDir}");
         var idpData = FindIDPDataDirectory(startingDir);
         
         var DirsInIDP = Directory.GetDirectories(idpData);
