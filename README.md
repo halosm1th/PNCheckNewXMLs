@@ -72,7 +72,7 @@ dotnet run
 
 You’ll see console logs as it:
 
-1. Finds your `NewXML` & `biblio` directories.
+1. Finds your `NewXMLEntries` & `Biblio` directories.
 
 2. Gathers and parses each new entry.
 
@@ -89,7 +89,7 @@ You’ll see console logs as it:
    >:
    ```
 
-4. On choosing a match (e.g. `2`), it locates `biblio/?.?/1932-BP1234.xml`, inserts any missing `<seg>` or `<note>` elements, saves, deletes the NewXML file, and moves on.
+4. On choosing a match (e.g. `2`), it locates `Biblio/?.?/1932-BP1234.xml`, inserts any missing `<seg>` or `<note>` elements, saves, deletes the NewXML file, and moves on.
 
 5. If you choose `0`, it logs that filename for review.
 
@@ -105,7 +105,7 @@ XmlFrom 2025-07-16(11-42).txt
 ## 🛠️ Troubleshooting
 
 * **“Directory not found”**
-  Ensure `NewXML` and `biblio` folders exist under where you run `dotnet run`.
+  Ensure `NewXMLEntries` and `Biblio` folders exist under where you run `dotnet run`.
 * **HTTP errors**
   Check your internet connection; papyri.info must be reachable.
 ---
