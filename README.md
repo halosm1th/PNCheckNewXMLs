@@ -4,21 +4,21 @@ A .NET 9 console application to merge and validate new 'fiches' created by the [
 It will:
 1. **Discover**  
    – Your **idp.data/biblio** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/2/1234.xml`, `…/biblio/3/2345.xml`, etc.)  
-   – A **NewXML** directory of freshly exported XML files you want to integrate.  
+   – A **NewXMLEntries** directory of freshly exported XML files you want to integrate.  
 
 2. **Gather & parse**  
-   – Reads each `*.xml` in your NewXML folder and extracts the `<seg>` and `<idno>` fields (BP number, author name, title, publication, résumé, etc.).  
+   – Reads each `*.xml` in your NewXMLEntries folder and extracts the `<seg>` and `<idno>` fields (BP number, author name, title, publication, résumé, etc.).  
 
 3. **Lookup & compare**  
    – Builds a search URL for each entry on papyri.info and scrapes the results table using HtmlAgilityPack.  
    – Prompts you to choose the matching existing entry—or “0” to mark it as new.  
 
 4. **Merge or record**  
-   – **If matched**: Loads the existing file, adds any missing `<seg subtype="…">` or `<note resp="#BP">` elements, saves it, and deletes the NewXML file.  
+   – **If matched**: Loads the existing file, adds any missing `<seg subtype="…">` or `<note resp="#BP">` elements, saves it, and deletes the NewXMLEntries file.  
    – **If new**: Logs its filename for later manual review.  
 
 5. **Report**  
-   – At the end, writes a timestamped `XmlFrom YYYY-MM-DD(HH‑MM).txt` in your working directory listing every NewXML file that had no match.  
+   – At the end, writes a timestamped `XmlFrom YYYY-MM-DD(HH‑MM).txt` in your working directory listing every NewXMLEntries file that had no match.  
 
 ---
 
@@ -35,9 +35,9 @@ project-root/
 │   ├── Logger.cs                 ← basic file‑and‑console logging  
 │   └── … (other helpers)  
 │
-├── NewXML/                       ← put your freshly exported XMLs here  
+├── NewXMLEntries/                ← put your freshly exported XMLs here  
 │
-└── idp.data/biblio/                       ← this is the idp.data/biblio archive  
+└── idp.data/biblio/              ← this is the idp.data/biblio archive  
 ````
 
 > **Note:** The directory names `NewXMLEntries/` and `Biblio/` are case‑insensitive but must exist somewhere under your working directory.  The tool will search upward from where you launch it, locate each folder by name, then pair files by their base BP‑number.
