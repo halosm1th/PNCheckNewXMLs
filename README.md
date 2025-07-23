@@ -3,7 +3,7 @@ A .NET 9 console application to merge and validate new “BP” entries against 
 
 It will:
 1. **Discover**  
-   – Your **idp.data/biblio** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/1/1234.xml`, `…/biblio/2/2345.xml`, etc.)  
+   – Your **idp.data/biblio** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/2/1234.xml`, `…/biblio/3/2345.xml`, etc.)  
    – A **NewXML** directory of freshly exported XML files you want to integrate.  
 
 2. **Gather & parse**  
