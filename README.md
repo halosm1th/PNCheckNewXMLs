@@ -35,9 +35,11 @@ project-root/
 │   ├── Logger.cs                 ← basic file‑and‑console logging  
 │   └── … (other helpers)  
 │
-├── NewXMLEntries/                ← put your freshly exported XMLs here  
+├── BpToPnOutput
+│   └── NewXMLEntries/            ← put your freshly exported XMLs here  
 │
-└── idp.data/biblio/              ← this is the idp.data/biblio archive  
+└── idp.data
+    └── Biblio/                   ← this is the idp.data/Biblio archive  
 ````
 
 > **Note:** The directory names `NewXMLEntries/` and `Biblio/` are case‑insensitive but must exist somewhere under your working directory.  The tool will search upward from where you launch it, locate each folder by name, then pair files by their base BP‑number.
