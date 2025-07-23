@@ -3,8 +3,8 @@ A .NET 9 console application to merge and validate new 'fiches' created by the [
 
 It will:
 1. **Discover**  
-   – Your **idp.data/biblio** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/2/1234.xml`, `…/biblio/3/2345.xml`, etc.)  
-   – A **NewXMLEntries** directory of freshly exported XML files you want to integrate.  
+   – Your **idp.data/Biblio/** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/2/1234.xml`, `…/biblio/3/2345.xml`, etc.)  
+   – A **NewXMLEntries/** directory of freshly exported XML files you want to integrate.  
 
 2. **Gather & parse**  
    – Reads each `*.xml` in your NewXMLEntries folder and extracts the `<seg>` and `<idno>` fields (BP number, author name, title, publication, résumé, etc.).  
