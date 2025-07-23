@@ -1,5 +1,5 @@
 # PNCheckNewXMLs
-A .NET 9 console application to merge and validate new “BP” entries against the papyri bibliography archive.  
+A .NET 9 console application to merge and validate new 'fiches' created by the [BPtoPNDataCompiler](https://github.com/halosm1th/BPtoPNDataCompiler), originating in the online [Bibliographie papyrologique](https://bibpap.be/) but not yet found in the bibliography database of [papyri.info](https://papyri.info)  
 
 It will:
 1. **Discover**  
@@ -40,7 +40,7 @@ project-root/
 └── idp.data/biblio/                       ← this is the idp.data/biblio archive  
 ````
 
-> **Note:** The directory names `NewXML` and `biblio` are case‑insensitive but must exist somewhere under your working directory.  The tool will search upward from where you launch it, locate each folder by name, then pair files by their base BP‑number.
+> **Note:** The directory names `NewXMLEntries/` and `Biblio/` are case‑insensitive but must exist somewhere under your working directory.  The tool will search upward from where you launch it, locate each folder by name, then pair files by their base BP‑number.
 
 ---
 
