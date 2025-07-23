@@ -23,7 +23,7 @@ It will:
 ---
 
 ## 🗂️ Folder Layout
-
+The key folders involved in the program all need to be siblings of one another: `idp.data`, `PNCheckNewXMLs`, and `BpToPnOutput`.
 ```text
 project-root/
 ├── PNCheckNewXMLs/               ← this C# console project
