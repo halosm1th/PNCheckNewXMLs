@@ -1,29 +1,29 @@
 # PNCheckNewXMLs
-A .NET 9 console application to merge and validate new “BP” entries against the papyri bibliography archive.  
+A .NET 9 console application to merge and validate new 'fiches' created by the [BPtoPNDataCompiler](https://github.com/halosm1th/BPtoPNDataCompiler), originating in the online [Bibliographie papyrologique](https://bibpap.be/) but not yet found in the bibliography database of [papyri.info](https://papyri.info)  
 
 It will:
 1. **Discover**  
-   – Your **idp.data/biblio** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/1/1234.xml`, `…/biblio/2/2345.xml`, etc.)  
-   – A **NewXML** directory of freshly exported XML files you want to integrate.  
+   – Your **idp.data/Biblio/** directory of existing XML files, organized into numeric subfolders (e.g. `…/biblio/2/1234.xml`, `…/biblio/3/2345.xml`, etc.)  
+   – A **NewXMLEntries/** directory of freshly exported XML files you want to integrate.  
 
 2. **Gather & parse**  
-   – Reads each `*.xml` in your NewXML folder and extracts the `<seg>` and `<idno>` fields (BP number, author name, title, publication, résumé, etc.).  
+   – Reads each `*.xml` in your NewXMLEntries folder and extracts the `<seg>` and `<idno>` fields (BP number, author name, title, publication, résumé, etc.).  
 
 3. **Lookup & compare**  
    – Builds a search URL for each entry on papyri.info and scrapes the results table using HtmlAgilityPack.  
    – Prompts you to choose the matching existing entry—or “0” to mark it as new.  
 
 4. **Merge or record**  
-   – **If matched**: Loads the existing file, adds any missing `<seg subtype="…">` or `<note resp="#BP">` elements, saves it, and deletes the NewXML file.  
+   – **If matched**: Loads the existing file, adds any missing `<seg subtype="…">` or `<note resp="#BP">` elements, saves it, and deletes the NewXMLEntries file.  
    – **If new**: Logs its filename for later manual review.  
 
 5. **Report**  
-   – At the end, writes a timestamped `XmlFrom YYYY-MM-DD(HH‑MM).txt` in your working directory listing every NewXML file that had no match.  
+   – At the end, writes a timestamped `XmlFrom YYYY-MM-DD(HH‑MM).txt` in your working directory listing every NewXMLEntries file that had no match.  
 
 ---
 
 ## 🗂️ Folder Layout
-
+The key folders involved in the program all need to be siblings of one another: `idp.data`, `PNCheckNewXMLs`, and `BpToPnOutput`.
 ```text
 project-root/
 ├── PNCheckNewXMLs/               ← this C# console project
@@ -35,12 +35,14 @@ project-root/
 │   ├── Logger.cs                 ← basic file‑and‑console logging  
 │   └── … (other helpers)  
 │
-├── NewXML/                       ← put your freshly exported XMLs here  
+├── BpToPnOutput
+│   └── NewXMLEntries/            ← put your freshly exported XMLs here  
 │
-└── idp.data/biblio/                       ← this is the idp.data/biblio archive  
+└── idp.data
+    └── Biblio/                   ← this is the idp.data/Biblio archive  
 ````
 
-> **Note:** The directory names `NewXML` and `biblio` are case‑insensitive but must exist somewhere under your working directory.  The tool will search upward from where you launch it, locate each folder by name, then pair files by their base BP‑number.
+> **Note:** The directory names `NewXMLEntries/` and `Biblio/` are case‑insensitive but must exist somewhere under your working directory.  The tool will search upward from where you launch it, locate each folder by name, then pair files by their base BP‑number.
 
 ---
 
@@ -72,7 +74,7 @@ dotnet run
 
 You’ll see console logs as it:
 
-1. Finds your `NewXML` & `biblio` directories.
+1. Finds your `NewXMLEntries` & `Biblio` directories.
 
 2. Gathers and parses each new entry.
 
@@ -89,7 +91,7 @@ You’ll see console logs as it:
    >:
    ```
 
-4. On choosing a match (e.g. `2`), it locates `biblio/?.?/1932-BP1234.xml`, inserts any missing `<seg>` or `<note>` elements, saves, deletes the NewXML file, and moves on.
+4. On choosing a match (e.g. `2`), it locates `Biblio/?.?/1932-BP1234.xml`, inserts any missing `<seg>` or `<note>` elements, saves, deletes the NewXML file, and moves on.
 
 5. If you choose `0`, it logs that filename for review.
 
@@ -105,7 +107,7 @@ XmlFrom 2025-07-16(11-42).txt
 ## 🛠️ Troubleshooting
 
 * **“Directory not found”**
-  Ensure `NewXML` and `biblio` folders exist under where you run `dotnet run`.
+  Ensure `NewXMLEntries` and `Biblio` folders exist under where you run `dotnet run`.
 * **HTTP errors**
   Check your internet connection; papyri.info must be reachable.
 ---
