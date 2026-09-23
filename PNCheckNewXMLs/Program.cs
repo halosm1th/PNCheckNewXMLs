@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 
 using System.Runtime.InteropServices.JavaScript;
 using System.Xml;
@@ -74,6 +74,7 @@ class PNCheckerNewXmls
         logger.Log($"Getting URL for entry {entry.BPNumber}");
         Console.WriteLine($"Getting URL for entry {entry.BPNumber}");
         var url = GetURLForEntry(entry);
+        Console.WriteLine(url);
 
         var table = TableEntriesFromPN(url);
         if (table.Count > 0)
@@ -370,47 +371,49 @@ class PNCheckerNewXmls
     }
 
     private static List<string> GetTableData(HtmlDocument document)
-    {    
-        var results = new List<string>();
+{    
+    var results = new List<string>();
 
-        // Select all table rows with class "result-record"
-        var rows = document.DocumentNode.SelectNodes("//tr[@class='result-record']");
+    // Select all result divs with class "result-record" (Bootstrap redesign:
+    // these are <div class="result-record mb-3"> now, not <tr class="result-record">,
+    // and the class attribute has multiple classes, so we need contains() not exact match)
+    var rows = document.DocumentNode.SelectNodes("//div[contains(concat(' ', normalize-space(@class), ' '), ' result-record ')]");
 
-        if (rows != null)
+    if (rows != null)
+    {
+        logger.LogProcessingInfo("Was able to extract a result record table from the page, now processing");
+        foreach (var row in rows)
         {
-            logger.LogProcessingInfo("Was able to extract a result record table from the page, now processing");
-            foreach (var row in rows)
+            // The citation text now lives directly inside the <a>, not a <td>
+            var cell = row.SelectSingleNode(".//a");
+            if (cell != null)
             {
-                // Extract the text content of the cell
-                var cell = row.SelectSingleNode(".//td");
-                if (cell != null)
-                {
-                    var text = HtmlEntity.DeEntitize(cell.InnerText)
-                        .Replace("\n","")
-                        .Replace("\t"," ")
-                        .Trim();
-                    logger.LogProcessingInfo($"Table results included: {text}");
-                    results.Add(text ?? "");
-                }
+                var text = HtmlEntity.DeEntitize(cell.InnerText)
+                    .Replace("\n","")
+                    .Replace("\t"," ")
+                    .Trim();
+                logger.LogProcessingInfo($"Table results included: {text}");
+                results.Add(text ?? "");
             }
         }
-
-        logger.LogProcessingInfo($"Finished gathering table data. Total results: {results.Count}");
-        
-        return results;
     }
 
-    static string GetURLForEntry(XMLDataEntry entry)
-    {
-        logger.LogProcessingInfo("Getting URL for the entry.");
-        
-        var year = "1932";
-        var name = "";
-        if (entry.HasBPNum) year = entry.BPNumber.Split("-")[0];
-        if (entry.HasName) name = entry.Name;
-        else name = GetName(entry);
-        var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{year}+{name}";
+    logger.LogProcessingInfo($"Finished gathering table data. Total results: {results.Count}");
+    
+    return results;
+}
 
+    static string GetURLForEntry(XMLDataEntry entry)
+{
+    logger.LogProcessingInfo("Getting URL for the entry.");
+    
+    var year = "1932";
+    var name = "";
+    if (entry.HasBPNum) year = entry.BPNumber.Split("-")[0];
+    if (entry.HasName) name = GetSurname(entry.Name);
+    else name = GetSurname(GetName(entry));
+    var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{Uri.EscapeDataString(year)}+{Uri.EscapeDataString(name)}";
+ 
         logger.LogProcessingInfo($"Gathered URL: {requestURL}");
         
         return requestURL;
@@ -428,6 +431,20 @@ class PNCheckerNewXmls
         }
         else throw new ArgumentOutOfRangeException("Error! The entry did not have a name element!");
     }
+
+    static string GetSurname(string fullName)
+{
+    if (string.IsNullOrWhiteSpace(fullName)) return fullName;
+    var trimmed = fullName.Trim();
+
+    // "Surname, Firstname" style
+    if (trimmed.Contains(","))
+        return trimmed.Split(',')[0].Trim();
+
+    // "Firstname Surname" style — take the last token
+    var tokens = trimmed.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    return tokens[tokens.Length - 1];
+}
 }
 
 //Coudl not find the BP to PN output and new xml,
