@@ -20,6 +20,7 @@ It will:
 5. **Report**  
    – At the end, writes a timestamped `XmlFrom YYYY-MM-DD(HH‑MM).txt` in your working directory listing every NewXMLEntries file that had no match.  
 
+NB: Papyri.info is now protected from bot traffic by Anubis, which will prevent this program from querying that site's bibliography records.
 ---
 
 ## 🗂️ Folder Layout
