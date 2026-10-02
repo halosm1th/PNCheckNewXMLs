@@ -408,16 +408,20 @@ class PNCheckerNewXmls
     logger.LogProcessingInfo("Getting URL for the entry.");
     
     var year = "1932";
-    var name = "";
+    var rawName = "";
     if (entry.HasBPNum) year = entry.BPNumber.Split("-")[0];
-    if (entry.HasName) name = GetSurname(entry.Name);
-    else name = GetSurname(GetName(entry));
-    var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{Uri.EscapeDataString(year)}+{Uri.EscapeDataString(name)}";
- 
-        logger.LogProcessingInfo($"Gathered URL: {requestURL}");
-        
-        return requestURL;
-    }
+    if (entry.HasName) rawName = entry.Name;
+    else rawName = GetName(entry);
+
+    var nameTokens = GetTopTokens(rawName, 2);
+    var nameQuery = string.Join("+", nameTokens.Select(Uri.EscapeDataString));
+
+    var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{Uri.EscapeDataString(year)}+{nameQuery}";
+
+    logger.LogProcessingInfo($"Gathered URL: {requestURL}");
+    
+    return requestURL;
+}
 
 
     static string GetName(XMLDataEntry entry)
@@ -432,18 +436,21 @@ class PNCheckerNewXmls
         else throw new ArgumentOutOfRangeException("Error! The entry did not have a name element!");
     }
 
-    static string GetSurname(string fullName)
+    static List<string> GetTopTokens(string fullName, int count)
 {
-    if (string.IsNullOrWhiteSpace(fullName)) return fullName;
+    if (string.IsNullOrWhiteSpace(fullName)) return new List<string>();
     var trimmed = fullName.Trim();
 
-    // "Surname, Firstname" style
-    if (trimmed.Contains(","))
-        return trimmed.Split(',')[0].Trim();
+    // Treat commas as separators too, so "Surname, Firstname" and
+    // "Firstname Surname" are both just a bag of tokens to rank by length.
+    // Ranking by length naturally filters out short junk like "(edd.)" or "†"
+    // in favor of actual name tokens.
+    var tokens = trimmed.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-    // "Firstname Surname" style — take the last token
-    var tokens = trimmed.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-    return tokens.OrderByDescending(t => t.Length).First();
+    return tokens
+        .OrderByDescending(t => t.Length)
+        .Take(count)
+        .ToList();
 }
 }
 
