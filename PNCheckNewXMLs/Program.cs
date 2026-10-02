@@ -443,7 +443,7 @@ class PNCheckerNewXmls
 
     // "Firstname Surname" style — take the last token
     var tokens = trimmed.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-    return tokens[tokens.Length - 1];
+    return tokens.OrderByDescending(t => t.Length).First();
 }
 }
 
