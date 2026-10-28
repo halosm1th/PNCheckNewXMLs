@@ -413,7 +413,7 @@ class PNCheckerNewXmls
     if (entry.HasName) rawName = entry.Name;
     else rawName = GetName(entry);
 
-    var nameTokens = GetTopTokens(rawName, 2);
+    var nameTokens = GetTopTokens(rawName);
     var nameQuery = string.Join("+", nameTokens.Select(Uri.EscapeDataString));
 
     var requestURL = $"https://papyri.info/bibliosearch?q=date%3A+{Uri.EscapeDataString(year)}+{nameQuery}";
@@ -436,7 +436,7 @@ class PNCheckerNewXmls
         else throw new ArgumentOutOfRangeException("Error! The entry did not have a name element!");
     }
 
-    static List<string> GetTopTokens(string fullName, int count)
+    static List<string> GetTopTokens(string fullName)
 {
     if (string.IsNullOrWhiteSpace(fullName)) return new List<string>();
     var trimmed = fullName.Trim();
@@ -446,6 +446,10 @@ class PNCheckerNewXmls
     // Ranking by length naturally filters out short junk like "(edd.)" or "†"
     // in favor of actual name tokens.
     var tokens = trimmed.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+    // Longer strings (more than 4 tokens) get the two longest tokens;
+    // otherwise just the single longest token.
+    var count = tokens.Length > 4 ? 2 : 1;
 
     return tokens
         .OrderByDescending(t => t.Length)
