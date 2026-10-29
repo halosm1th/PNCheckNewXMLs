@@ -221,6 +221,11 @@ class PNCheckerNewXmls
             logger.LogProcessingInfo($"Trying to append {fieldValue} to {fieldValue} in {Path.GetFileName(fileName)}.");
             var newNameElement = file.CreateElement("seg", "http://www.tei-c.org/ns/1.0");
 
+            // Set type attribute
+            var type = file.CreateAttribute("type");
+            type.Value = "original";
+            newNameElement.Attributes.Append(type);
+
             // Set subtype attribute
             var subtypeAttr = file.CreateAttribute("subtype");
             subtypeAttr.Value = fieldName;
@@ -231,11 +236,7 @@ class PNCheckerNewXmls
             respAttr.Value = "#BP";
             newNameElement.Attributes.Append(respAttr);
 
-            // Set type attribute
-            var type = file.CreateAttribute("type");
-            type.Value = "original";
-            newNameElement.Attributes.Append(type);
-
+            
             // Set name text
             newNameElement.InnerText = fieldValue;
             
@@ -261,34 +262,22 @@ class PNCheckerNewXmls
     }
 
     private static string GetFilePath(string chosen, string path)
-    {
-        logger.LogProcessingInfo($"Extracting number from {chosen} to generate file path.");
-        var len = chosen.Length;
-        string numb = "";
-        //If it 1,10,111-999, or 1000 its in category 1, else its in one of the other categories
-        if (len < 4 || chosen == "1000")
-        {
-            numb = "1";
-        } 
-        
-        //If it is exactly 4
-        if (chosen.Length == 4)
-        {
-            numb = chosen[0].ToString();
-        }
-        
-        //If its 5, then we know its 11-99 
-        if (chosen.Length == 5)
-        {
-            numb= $"{chosen[0]}{chosen[1]}";
-        }
-        
-        var finalPath =  GetPathFromNumber(numb, chosen, path);
-        logger.LogProcessingInfo($"Retrived number {numb} from {chosen} to construct path is at: {finalPath}.");
-       
-        return finalPath;
-        throw new ArgumentOutOfRangeException("Error Invalid Number!");
-    }
+{
+    logger.LogProcessingInfo($"Extracting number from {chosen} to generate file path.");
+
+    if (!Int32.TryParse(chosen.Trim(), out var bpNumber))
+        throw new ArgumentOutOfRangeException(nameof(chosen), $"Error: '{chosen}' is not a valid BP number!");
+
+    // Folders are grouped by thousands (1234 -> 1, 10500 -> 10, 100125 -> 100),
+    // and GetPathFromNumber adds 1 to get the folder name.
+    // Numbers under 1000 are treated as category 1, same as before.
+    var numb = bpNumber < 1000 ? "1" : (bpNumber / 1000).ToString();
+
+    var finalPath = GetPathFromNumber(numb, chosen, path);
+    logger.LogProcessingInfo($"Retrived number {numb} from {chosen} to construct path is at: {finalPath}.");
+
+    return finalPath;
+}
 
     private static string GetPathFromNumber(string numbString, string chosen, string path)
     {
