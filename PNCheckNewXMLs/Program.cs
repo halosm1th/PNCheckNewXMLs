@@ -144,7 +144,7 @@ class PNCheckerNewXmls
         
         
         logger.LogProcessingInfo("Now checking what segs the entry has, and comparing them against the file, so that any segs which are missing can be added.");
-        if(entry.HasName) AddItem(root,file, name,"Name", entry.Name, path);
+        if(entry.HasName) AddItem(root,file, name,"nom", entry.Name, path);
         if(entry.HasBPNum) AddIdno(root, file, idno,  entry.BPNumber, path);
         if(entry.HasIndex) AddItem(root, file, index, "index", entry.Index, path);
         if(entry.HasIndexBis) AddItem(root, file, indexBis, "indexBis" ,entry.IndexBis, path);
