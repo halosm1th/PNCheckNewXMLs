@@ -9,15 +9,19 @@ It will:
 2. **Gather & parse**  
    – Reads each `*.xml` in your NewXMLEntries folder and extracts the `<seg>` and `<idno>` fields (BP number, author name, title, publication, résumé, etc.).  
 
-3. **Lookup & compare**  
-   – Builds a search URL for each entry on papyri.info and scrapes the results table using HtmlAgilityPack.  
+3. **Index local idp.data/Biblio/ directory**
+   – Compile a comprehensive index of `idno[@type="bp"]` in the local idp.data/Biblio/ directory
+
+4. **Lookup & compare**  
+   – Where the value of `idno[@type="bp"]` in a newly exported XML file corresponds to that of an existing file in the local directory, a match is made (see **#5**, below).
+   – Where the value of `idno[@type="bp"]` in a newly exported XML file appears nowhere in the local directory, it constructs a search API for papyri.info for potential matches and scrapes the results table using HtmlAgilityPack.  
    – Prompts you to choose the matching existing entry—or “0” to mark it as new.  
 
-4. **Merge or record**  
+5. **Merge or record**  
    – **If matched**: Loads the existing file, adds any missing `<seg subtype="…">` or `<note resp="#BP">` elements, saves it, and deletes the NewXMLEntries file.  
    – **If new**: Logs its filename for later manual review.  
 
-5. **Report**  
+6. **Report**  
    – At the end, writes a timestamped `XmlFrom YYYY-MM-DD(HH‑MM).txt` in your working directory listing every NewXMLEntries file that had no match.  
 
 NB: Papyri.info is now protected from bot traffic by Anubis, which will prevent this program from querying that site's bibliography records.
